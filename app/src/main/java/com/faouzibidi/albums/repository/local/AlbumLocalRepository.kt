@@ -6,14 +6,21 @@ import com.faouzibidi.albums.repository.AlbumRepository
 /**
  * this repository will fetch and store data from and into AlbumsDatabase
  */
-class AlbumLocalRepository : AlbumRepository(){
-    override suspend fun getAlbums(): List<Album> {
-        TODO("Not yet implemented")
-        return listOf()
+class AlbumLocalRepository(private val albumDao : AlbumDao){
+
+    fun getAlbums(): List<Album>? {
+        return albumDao.getAllAlbums().value
     }
 
-    fun storeAlbums(albums : List<Album>){
+    suspend fun storeAlbums(albums : List<Album>){
         // store albums in db
+        for (album in albums){
+            albumDao.insertAlbum(album)
+        }
+    }
+
+    suspend fun deleteAlbums(){
+        albumDao.deleteAll()
     }
 
 }
