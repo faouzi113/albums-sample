@@ -39,10 +39,13 @@ class LocalRepositoryTest {
      */
     @Test
     fun insert() = runBlocking {
+
         val db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             AlbumRoomDatabse::class.java)
             .build()
+
+
         // create test data
         val albums = arrayListOf<Album>()
         for (i in 0..10){
@@ -51,7 +54,10 @@ class LocalRepositoryTest {
         }
         // test repository
         val repository = AlbumLocalRepository(db.AlbumDao())
-        repository.storeAlbums(albums)
+        //repository.storeAlbums(albums)
+        for(a in albums){
+            db.AlbumDao().insertAlbum(a)
+        }
 
         // albums stored in database
         val dbAlbums = repository.getAlbums()

@@ -1,7 +1,6 @@
 package com.faouzibidi.albums.repository.local
 
 import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.repository.AlbumRepository
 
 /**
  * this repository will fetch and store data from and into AlbumsDatabase

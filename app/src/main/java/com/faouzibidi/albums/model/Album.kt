@@ -12,14 +12,12 @@ import com.squareup.moshi.Json
  */
 @Entity(tableName = "album_table")
 data class Album(
-    @PrimaryKey val id : Int,
-    val albumId : Int,
-    val title : String,
-    val url : String,
+    @PrimaryKey var id : Int,
+    var albumId : Int,
+    var title : String,
+    var url : String,
     // we have changed the name of this attribute for the simplicity of use
     // and the understandability
     @Json(name = "thumbnailUrl")
-    // this is for db column name
-    @ColumnInfo(name = "imageUrl")
-    val imageUrl : String
+    var imageUrl : String
 )

@@ -16,8 +16,17 @@ import com.faouzibidi.albums.model.Album
 @Dao
 interface AlbumDao {
 
+    /**
+     * insert one element
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAlbum(album: Album)
+
+    /**
+     * insert a list of elements
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllAlbums(album: List<Album>)
 
     /**
      * this is not a safe method for the application, we just use it for testing
