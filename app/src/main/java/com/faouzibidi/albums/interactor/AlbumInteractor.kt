@@ -1,6 +1,7 @@
 package com.faouzibidi.albums.interactor
 
 import android.content.Context
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,6 +40,7 @@ class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepo
      * if there is stored data in local database we send them first
      * else we fetch data from remotre repository then we send them
      */
+    @WorkerThread
     suspend fun loadAlbums(){
         // check if we have data in db
         var albums = localRepository.getAlbums()

@@ -7,4 +7,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Text theme. -->
+    <style name="AlbumCardViewTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:padding">@dimen/txt_padding</item>
+    </style>
+
+    <style name="AlbumCardViewText" parent="TextAppearance.AppCompat.Body1">
+    </style>
+
+
 </resources>
