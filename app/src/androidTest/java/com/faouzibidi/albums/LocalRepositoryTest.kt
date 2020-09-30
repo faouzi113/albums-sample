@@ -60,7 +60,7 @@ class LocalRepositoryTest {
         }
 
         // albums stored in database
-        val dbAlbums = repository.getAlbums()
+        val dbAlbums = db.AlbumDao().getAll()
         assertNotNull(dbAlbums)
         assertEquals(dbAlbums!!.size, albums.size)
 

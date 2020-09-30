@@ -38,6 +38,9 @@ interface AlbumDao {
     @Query("SELECT * from album_table ORDER BY id ASC")
     fun getAllAlbums(): LiveData<List<Album>>
 
+    @Query("SELECT * from album_table ORDER BY id ASC")
+    fun getAll(): List<Album>
+
     /**
      * get a range of albums starting from the offset index to offset+limit
      * because limit IT IS NOT an index but the count of rows to retrieve
