@@ -143,5 +143,50 @@ class RemoteRepositoryPerformanceTest {
 
     }
 
+    /**
+     * test Sequence.chunked method intead of Sequence.foreach
+     *
+     * Sequence.chunked allows us to take first sublist and show it to user
+     * then proceed to storing all data partially
+     *
+     * since we aim to run this methos in asynchronous execution stack
+     * this will take less time
+     *
+     * Results :
+        I/System.out: Elapsed time : 6194
+        I/System.out: Elapsed memory : 3736264
+
+            we gained : 4015 ms in execution time
+                        4719192 Byte in execution memory which more than 50% of memory execution
+                                consumed by the first api call
+     */
+    @Test
+    fun chunkedSequencePerformance() = runBlocking {
+        val repository = AlbumRemoteRepository()
+        // force the call of gc to freeup memory
+        System.gc()
+        val startTime = System.currentTimeMillis()
+        val startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
+        // call api
+        val albums = repository.getAlbumsSequence()
+        val chunkedLists = albums.chunked(100)
+        launch {
+            chunkedLists.forEach {
+                println("Items : ${it.size}")
+            }
+        }
+        //
+        System.gc()
+        val finishTime = System.currentTimeMillis()
+        val finishMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
+        //
+        val elapsedMemory = finishMemory - startMemory
+        val elapsedTime = finishTime - startTime
+        //
+        println("Elapsed time : $elapsedTime")
+        println("Elapsed memory : $elapsedMemory")
+
+    }
+
 
 }
