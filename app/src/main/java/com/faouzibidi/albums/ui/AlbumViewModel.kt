@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  */
 class AlbumViewModel(application : Application) : AndroidViewModel(application){
 
-    private  var albums = MutableLiveData<List<Album>>()
+    private  var albumsMutableLiveData = MutableLiveData<List<Album>>()
     // TODO("init interctaor with koin instance")
     private val interactor : AlbumInteractor
 
@@ -37,21 +37,34 @@ class AlbumViewModel(application : Application) : AndroidViewModel(application){
      * return a LiveData of Albums
      */
     fun getAlbums() : LiveData<List<Album>>{
-        return albums
+        return albumsMutableLiveData
     }
 
     /**
      * set the value and notify hte observers
      */
     fun setValue(albumsList : List<Album>){
-        albums.value = albumsList
+        albumsMutableLiveData.value = albumsList
     }
 
     /**
      * used to set value from background Thread
      */
     fun postValue(albumsList : List<Album>){
-        albums.postValue(albumsList)
+        albumsMutableLiveData.postValue(albumsList)
+    }
+
+    /**
+     * used to set value from background Thread
+     */
+    fun addElements(albumsList : List<Album>){
+        if (albumsMutableLiveData.value== null){
+            albumsMutableLiveData.postValue(albumsList)
+        }else{
+            val list = albumsMutableLiveData.value!!.plus(albumsList)
+            albumsMutableLiveData.postValue(list)
+        }
+
     }
 
 

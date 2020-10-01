@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.faouzibidi.albums.ui.AlbumViewModel
 import com.faouzibidi.albums.ui.adapters.AlbumListAdapter
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.setAlbums(it)
             }
         })
+
         // load albums
         albumViewModel.loadAlbums()
     }

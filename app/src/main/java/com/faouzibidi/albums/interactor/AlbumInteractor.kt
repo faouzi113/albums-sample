@@ -10,6 +10,8 @@ import com.faouzibidi.albums.model.Album
 import com.faouzibidi.albums.repository.local.AlbumLocalRepository
 import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
 import com.faouzibidi.albums.ui.AlbumViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * We use in this Application MVVMi architecture, and this
@@ -42,24 +44,44 @@ class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepo
      */
     @WorkerThread
     suspend fun loadAlbums(){
-        // check if we have data in db
-        var albums = localRepository.getAlbums()
-        if (albums != null){
-            // we send first data stored in db
-            // for observers
-            albumViewModel.postValue(albums)
-        }else{
-            if(NetworkHelper.isConnected(context)){
-                albums = remoteRepository.getAlbums()
-                // set Livedata value and dispatch notification event
+        return withContext(Dispatchers.IO) {
+            // check if we have data in db
+            var albums = localRepository.getAlbums()
+            if (albums != null){
+                // we send first data stored in db
                 // for observers
                 albumViewModel.postValue(albums)
-                // store albums in local db
-                localRepository.storeAlbums(albums)
             }else{
-                TODO("schedule a work for workmanager")
-            }
+                if(NetworkHelper.isConnected(context)){
+                    val albumsSeq = remoteRepository.getAlbums()
+                    // fetch data
+                    fetchData(albumsSeq)
+                }else{
+                    TODO("schedule a work for workmanager")
+                }
 
+            }
+        }
+
+    }
+
+    /**
+     * this private method contains all the logic of
+     * fetching data from Sequence Object
+     */
+    private suspend fun fetchData(seq: Sequence<Album>){
+        val albumsChunkedList = seq.chunked(200)
+        /*
+            split the Sequence inot small lists of 200 elements
+            for each sublist we store elemets in db
+            and we populate elements to the modelview
+         */
+        albumsChunkedList.forEach {
+            // set Livedata value and dispatch notification event
+            // for observers
+            albumViewModel.addElements(it)
+            // store albums in local db
+            localRepository.storeAlbums(it)
         }
     }
 
