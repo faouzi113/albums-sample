@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.mock.repository.remote
+package com.faouzibidi.albums.repository.remote
 
 import android.content.Context
 import com.faouzibidi.albums.model.Album

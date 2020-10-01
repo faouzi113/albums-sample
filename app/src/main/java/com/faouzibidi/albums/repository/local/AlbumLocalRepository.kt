@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.mock.repository.local
+package com.faouzibidi.albums.repository.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList

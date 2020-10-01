@@ -27,13 +27,24 @@ class MainActivity : AppCompatActivity() {
         // init and observe on viewmodel
         val albumViewModel = ViewModelProvider(this).get(AlbumViewModel::class.java)
         val start = System.currentTimeMillis()
+        var i = 0
         albumViewModel.getAlbumsPagedList().observe(this, Observer { albums ->
-            // hide loader
-            loader.visibility = View.GONE
-            adapter.submitList(albums)
-            val end = System.currentTimeMillis()
-            Log.d("perf", "elapsedTime : ${end-start}")
+            if(albums != null){
+                // hide loader
+                loader.visibility = View.GONE
+                adapter.submitList(albums)
+                val end = System.currentTimeMillis()
+                Log.d("perf", "elapsedTime $i : ${end-start}")
+            }else{
+                val end = System.currentTimeMillis()
+                Log.d("perf", "first call elapsedTime : ${end-start}")
+            }
+            i++
+
         })
+
+        // call loading method
+        albumViewModel.loadAlbums()
     }
 
     /**

@@ -2,7 +2,8 @@ package com.faouzibidi.albums.coverage
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepositoryFake
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.faouzibidi.albums.repository.remote.AlbumRemoteRepositoryFake
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -21,7 +22,9 @@ class RemoteRepositoryTest {
 
     @Before
     fun initialize(){
-        repositoryFake = AlbumRemoteRepositoryFake(ApplicationProvider.getApplicationContext())
+        // use getInstrumentation().getContext() instead of ApplicationProvider.getApplicationContext
+        // to get context with test resources
+        repositoryFake = AlbumRemoteRepositoryFake(getInstrumentation().getContext())
     }
     /**
      * test getAlbums method

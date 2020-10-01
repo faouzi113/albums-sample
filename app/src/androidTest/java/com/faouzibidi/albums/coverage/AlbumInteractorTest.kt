@@ -4,9 +4,10 @@ package com.faouzibidi.albums.coverage
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.faouzibidi.albums.mock.interactor.AlbumInteractorFake
-import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepositoryFake
-import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepositoryFake
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.faouzibidi.albums.interactor.AlbumInteractorFake
+import com.faouzibidi.albums.repository.local.AlbumLocalRepositoryFake
+import com.faouzibidi.albums.repository.remote.AlbumRemoteRepositoryFake
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +26,9 @@ class AlbumInteractorTest {
 
     @Before
     fun initialize(){
-        val ctx : Context = ApplicationProvider.getApplicationContext()
+        // use getInstrumentation().getContext() instead of ApplicationProvider.getApplicationContext
+        // to get context with test resources
+        val ctx : Context = getInstrumentation().getContext()
         // create local and remote repositories
         val localRepository = AlbumLocalRepositoryFake.getInstance(ctx)
         val remoteRepository = AlbumRemoteRepositoryFake(ctx)

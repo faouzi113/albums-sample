@@ -5,11 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
-import com.faouzibidi.albums.mock.interactor.AlbumInteractor
+import com.faouzibidi.albums.interactor.AlbumInteractor
 import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepository
-import com.faouzibidi.albums.mock.repository.local.AlbumRoomDatabse
-import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.repository.local.AlbumLocalRepository
+import com.faouzibidi.albums.repository.local.AlbumRoomDatabse
+import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
 import kotlinx.coroutines.launch
 
 /**

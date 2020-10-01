@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.mock.repository.remote
+package com.faouzibidi.albums.repository.remote
 
 import com.faouzibidi.albums.model.Album
 import com.squareup.moshi.JsonAdapter
@@ -63,9 +63,6 @@ class AlbumSequenceParser(moshi: Moshi){
         // create a JsonReader from bufferedSource
         return JsonReader.of(bufferedSource)
     }
-
-
-
 }
 
 /**

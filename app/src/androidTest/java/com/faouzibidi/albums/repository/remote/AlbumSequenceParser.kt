@@ -1,7 +1,7 @@
-package com.faouzibidi.albums.mock.repository.remote
+package com.faouzibidi.albums.repository.remote
 
 import android.content.Context
-import com.faouzibidi.albums.R
+import com.faouzibidi.albums.test.R
 import com.faouzibidi.albums.model.Album
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader

@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.mock.repository.local
+package com.faouzibidi.albums.repository.local
 
 import android.content.Context
 import androidx.room.Database

@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.mock.interactor
+package com.faouzibidi.albums.interactor
 
 import android.content.Context
 import androidx.annotation.WorkerThread
@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.faouzibidi.albums.helpers.NetworkHelper
 import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepository
-import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.repository.local.AlbumLocalRepositoryFake
+import com.faouzibidi.albums.repository.remote.AlbumRemoteRepositoryFake
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
  *
  * @author faouzi BIDI
  */
-class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepository: AlbumLocalRepository, val context: Context) {
+class AlbumInteractorFake(val remoteRepository: AlbumRemoteRepositoryFake, val localRepository: AlbumLocalRepositoryFake, val context: Context) {
 
     private val CHUNCKED_SEQ_SIZE = 100
     /**
