@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.faouzibidi.albums.R
@@ -23,12 +25,11 @@ import com.faouzibidi.albums.model.Album
  *
  * @author faouzi BIDI
  */
-class AlbumListAdapter internal constructor(
+class AlbumPagedListAdapter internal constructor(
     val context: Context
-) : RecyclerView.Adapter<AlbumListAdapter.AlbumViewHolder>() {
+) : PagedListAdapter<Album, AlbumPagedListAdapter.AlbumViewHolder>(DIFF_CALLBACK) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var albums = emptyList<Album>()
 
     inner class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val idTextView: TextView = itemView.findViewById(R.id.album_id)
@@ -43,12 +44,15 @@ class AlbumListAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
-        val current = albums[position]
-        holder.idTextView.text = current.albumId.toString()
-        holder.titleTextView.text = current.title
-        holder.urlTextView.text = current.url
-        //
-        loadImage(holder.image, current.imageUrl)
+        val current = getItem(position)
+        if(current!=null){
+            holder.idTextView.text = current.id.toString()
+            holder.titleTextView.text = current.title
+            holder.urlTextView.text = current.url
+            //
+            //loadImage(holder.image, current.imageUrl)
+        }
+
     }
 
     /**
@@ -67,10 +71,16 @@ class AlbumListAdapter internal constructor(
 
     }
 
-    internal fun setAlbums(albumsList: List<Album>) {
-        this.albums = albumsList
-        notifyDataSetChanged()
+    companion object {
+        private val DIFF_CALLBACK = object :
+            DiffUtil.ItemCallback<Album>() {
+
+            override fun areItemsTheSame(oldAlbum: Album,
+                                         newAlbum: Album) = oldAlbum.id == newAlbum.id
+
+            override fun areContentsTheSame(oldAlbum: Album,
+                                            newAlbum: Album) = oldAlbum == newAlbum
+        }
     }
 
-    override fun getItemCount() = albums.size
 }

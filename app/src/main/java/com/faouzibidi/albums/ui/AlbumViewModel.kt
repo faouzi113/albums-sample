@@ -3,13 +3,13 @@ package com.faouzibidi.albums.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.faouzibidi.albums.interactor.AlbumInteractor
+import androidx.paging.PagedList
+import com.faouzibidi.albums.mock.interactor.AlbumInteractor
 import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.repository.local.AlbumLocalRepository
-import com.faouzibidi.albums.repository.local.AlbumRoomDatabse
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepository
+import com.faouzibidi.albums.mock.repository.local.AlbumRoomDatabse
+import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -23,51 +23,21 @@ import kotlinx.coroutines.launch
  */
 class AlbumViewModel(application : Application) : AndroidViewModel(application){
 
-    private  var albumsMutableLiveData = MutableLiveData<List<Album>>()
     // TODO("init interctaor with koin instance")
     private val interactor : AlbumInteractor
 
     init {
         val remoteRepository = AlbumRemoteRepository()
         val localRepository = AlbumLocalRepository(AlbumRoomDatabse.getDatabase(application).AlbumDao())
-        interactor = AlbumInteractor(remoteRepository, localRepository, application, this)
+        interactor = AlbumInteractor(remoteRepository, localRepository, application)
     }
 
     /**
      * return a LiveData of Albums
      */
-    fun getAlbums() : LiveData<List<Album>>{
-        return albumsMutableLiveData
+    fun getAlbumsPagedList() : LiveData<PagedList<Album>>{
+        return interactor.getPagedList()
     }
-
-    /**
-     * set the value and notify hte observers
-     */
-    fun setValue(albumsList : List<Album>){
-        albumsMutableLiveData.value = albumsList
-    }
-
-    /**
-     * used to set value from background Thread
-     */
-    fun postValue(albumsList : List<Album>){
-        albumsMutableLiveData.postValue(albumsList)
-    }
-
-    /**
-     * used to set value from background Thread
-     */
-    fun addElements(albumsList : List<Album>){
-        if (albumsMutableLiveData.value== null){
-            albumsMutableLiveData.postValue(albumsList)
-        }else{
-            val list = albumsMutableLiveData.value!!.plus(albumsList)
-            albumsMutableLiveData.postValue(list)
-        }
-
-    }
-
-
 
     /**
      * this method call the interactor to fetch data from repositories
@@ -80,7 +50,6 @@ class AlbumViewModel(application : Application) : AndroidViewModel(application){
         viewModelScope.launch {
             interactor.loadAlbums()
         }
-
     }
 
 }

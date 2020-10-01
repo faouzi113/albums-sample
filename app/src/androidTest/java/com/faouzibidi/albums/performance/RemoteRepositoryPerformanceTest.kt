@@ -1,19 +1,33 @@
 package com.faouzibidi.albums.performance
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
+import androidx.test.filters.LargeTest
+import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
 * this class is used for testing api calls performances
+ *
+ * for this tests we use the real repository to
+ * get real data and calculate the real behaviour
  */
 @RunWith(AndroidJUnit4::class)
+@LargeTest
 class RemoteRepositoryPerformanceTest {
 
+    private lateinit var repository : AlbumRemoteRepository
+
+    @Before
+    fun initialize(){
+        repository = AlbumRemoteRepository()
+        // force the call of gc to freeup memory
+        System.gc()
+    }
     /**
      * in this test we will call the api and calculate
      * used memory and elapsed time
@@ -25,27 +39,13 @@ class RemoteRepositoryPerformanceTest {
      *
      * this results is for calling the entire json file
      * we try in next tests to download the file as a stream
+     *
+     * @Deprecated it was replaced by Sequence call
+     * but we keep just info of measurements
      */
     @Test
     fun computeRetrofitCallPerformance() = runBlocking {
-        val repository = AlbumRemoteRepository()
-        // force the call of gc to freeup memory
-        System.gc()
-        val startTime = System.currentTimeMillis()
-        val startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
-        // call api
-        val albums = repository.getAlbums()
-        //
-        System.gc()
-        val finishTime = System.currentTimeMillis()
-        val finishMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
-        //
-        val elapsedMemory = finishMemory - startMemory
-        val elapsedTime = finishTime - startTime
-        //
-        println("Elapsed time : $elapsedTime")
-        println("Elapsed memory : $elapsedMemory")
-        println("Items : ${albums.size}")
+        // donothing
     }
 
 
@@ -72,13 +72,11 @@ class RemoteRepositoryPerformanceTest {
      */
     @Test
     fun computeParserCallPerformance() = runBlocking {
-        val repository = AlbumRemoteRepository()
-        // force the call of gc to freeup memory
-        System.gc()
+
         val startTime = System.currentTimeMillis()
         val startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
         // call api
-        val albums = repository.getAlbumsSequence().toList()
+        val albums = repository.getAlbums().toList()
 
         //
         System.gc()
@@ -117,12 +115,10 @@ class RemoteRepositoryPerformanceTest {
     @Test
     fun computeSequenceParsingPerformance() = runBlocking {
         val repository = AlbumRemoteRepository()
-        // force the call of gc to freeup memory
-        System.gc()
         val startTime = System.currentTimeMillis()
         val startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
         // call api
-        val albums = repository.getAlbumsSequence()
+        val albums = repository.getAlbums()
 
         launch {
             albums.forEach {
@@ -140,8 +136,8 @@ class RemoteRepositoryPerformanceTest {
         println("Elapsed time : $elapsedTime")
         println("Elapsed memory : $elapsedMemory")
         //println("Items : ${albums.count()}")
-
     }
+
 
     /**
      * test Sequence.chunked method intead of Sequence.foreach
@@ -168,7 +164,7 @@ class RemoteRepositoryPerformanceTest {
         val startTime = System.currentTimeMillis()
         val startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
         // call api
-        val albums = repository.getAlbumsSequence()
+        val albums = repository.getAlbums()
         val chunkedLists = albums.chunked(100)
         launch {
             chunkedLists.forEach {

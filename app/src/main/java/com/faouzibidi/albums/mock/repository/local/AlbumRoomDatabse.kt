@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.mock.repository.local
 
 import android.content.Context
 import androidx.room.Database
@@ -9,6 +9,8 @@ import com.faouzibidi.albums.model.Album
 /**
  * this is the abstract class for the database
  * this database allows us to store data got from the webservice
+ *
+ * @author Faouzi BIDI
  */
 @Database(entities = arrayOf(Album::class), version = 1, exportSchema = false)
 abstract class AlbumRoomDatabse : RoomDatabase(){

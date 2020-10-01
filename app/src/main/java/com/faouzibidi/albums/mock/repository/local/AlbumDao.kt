@@ -1,6 +1,6 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.mock.repository.local
 
-import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,6 +11,7 @@ import com.faouzibidi.albums.model.Album
  *
  * this interface is the dao object used for room database
  * it defines all crud methodes
+ *
  * @author faouzi BIDI
  */
 @Dao
@@ -35,24 +36,16 @@ interface AlbumDao {
     @Query("DELETE FROM album_table")
     suspend fun deleteAll()
 
-    @Query("SELECT * from album_table ORDER BY id ASC")
-    fun getAllAlbums(): LiveData<List<Album>>
-
-    @Query("SELECT * from album_table ORDER BY id ASC")
-    fun getAll(): List<Album>
+    /**
+     * get a PagedList for Albums in db
+     */
+    @Query("SELECT * from album_table")
+    fun getAlbumsPagedList(): DataSource.Factory<Int, Album>
 
     /**
-     * get a range of albums starting from the offset index to offset+limit
-     * because limit IT IS NOT an index but the count of rows to retrieve
+     * get a first element
      */
-    @Query("SELECT * from album_table ORDER BY id ASC LIMIT :limit OFFSET :offset")
-    fun getAlbums(offset:Int, limit:Int): LiveData<List<Album>>
-
-    /**
-     * get an album by its id
-     */
-    @Query("SELECT * from album_table WHERE id =:id ORDER BY id ASC")
-    fun getAlbumById(id:Int): LiveData<List<Album>>
-
+    @Query("SELECT * from album_table LIMIT 1")
+    fun getFirstElement(): Album
 
 }
