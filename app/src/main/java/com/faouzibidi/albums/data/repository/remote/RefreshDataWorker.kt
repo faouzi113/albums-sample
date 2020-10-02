@@ -18,7 +18,6 @@ import kotlinx.coroutines.coroutineScope
  * @see CoroutineWorker
  */
 class RefreshDataWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
-    // TODO("get instance with koin")
     private val interactor : AlbumInteractor
 
     init {

@@ -1,5 +1,6 @@
 package com.faouzibidi.albums.data.repository.local
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,6 +14,12 @@ import com.faouzibidi.albums.data.model.Album
  */
 @Dao
 interface AlbumDao {
+
+    /**
+     * insert one element
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAlbum(album: Album)
 
     /**
      * insert a list of elements
@@ -31,12 +38,19 @@ interface AlbumDao {
      * get a PagedList for Albums in db
      */
     @Query("SELECT * from album_table")
-    fun getAll(): List<Album>
+    fun getAlbumsPagedList(): DataSource.Factory<Int, Album>
 
     /**
      * get a first element
      */
     @Query("SELECT * from album_table LIMIT 1")
     fun getFirstElement(): Album
+
+    /**
+     * get a PagedList for Albums in db
+     */
+    @Query("SELECT * from album_table")
+    fun getAll(): List<Album>
+
 
 }
