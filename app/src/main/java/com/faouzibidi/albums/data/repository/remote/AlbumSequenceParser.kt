@@ -5,6 +5,8 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import okio.Okio
+import okio.buffer
+import okio.source
 import java.net.URL
 
 /**
@@ -59,7 +61,8 @@ class AlbumSequenceParser(moshi: Moshi){
         // create an inputstream from the URL
         val inputStream = URL(url).openStream()
         // get a bufferedSource from the inputStream
-        val bufferedSource = Okio.buffer(Okio.source(inputStream))
+        val bufferedSource = inputStream.source().buffer()
+        //val bufferedSource = Okio.buffer(Okio.source(inputStream))
         // create a JsonReader from bufferedSource
         return JsonReader.of(bufferedSource)
     }

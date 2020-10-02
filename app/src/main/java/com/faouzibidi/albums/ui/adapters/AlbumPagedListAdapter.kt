@@ -10,9 +10,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.faouzibidi.albums.R
 import com.faouzibidi.albums.data.model.Album
+import com.squareup.picasso.Picasso
 
 /**
  *
@@ -50,7 +50,7 @@ class AlbumPagedListAdapter internal constructor(
             holder.titleTextView.text = current.title
             holder.urlTextView.text = current.url
             //
-            //loadImage(holder.image, current.imageUrl)
+            loadImage(holder.image, current.imageUrl)
         }
 
     }
@@ -60,15 +60,12 @@ class AlbumPagedListAdapter internal constructor(
      * to the list item image view
      */
     private fun loadImage(imageView: ImageView, url:String){
-        Glide.with(context)
+        Picasso.get()
             .load(url)
             .placeholder(R.drawable.ic_launcher_background)
-            //TODO("check which size to use")
-            //.override(200, 200)
-            .centerCrop()
+            .resize( 150, 150)
+            //.centerCrop()
             .into(imageView)
-
-
     }
 
     companion object {
