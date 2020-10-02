@@ -6,16 +6,18 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.faouzibidi.albums.R
 import com.faouzibidi.albums.ui.adapters.AlbumPagedListAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(){
 
     private lateinit var loader: ProgressBar
     private lateinit var adapter: AlbumPagedListAdapter
+    val albumViewModel :AlbumViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         initViews()
 
         // init and observe on viewmodel
-        val albumViewModel = ViewModelProvider(this).get(AlbumViewModel::class.java)
+        //val albumViewModel = ViewModelProvider(this).get(AlbumViewModel::class.java)
         val start = System.currentTimeMillis()
         var i = 0
         albumViewModel.getAlbumsPagedList().observe(this, Observer { albums ->

@@ -7,10 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.faouzibidi.albums.interactor.AlbumInteractor
 import com.faouzibidi.albums.data.model.Album
-import com.faouzibidi.albums.data.repository.local.AlbumLocalRepository
-import com.faouzibidi.albums.data.repository.local.AlbumRoomDatabse
-import com.faouzibidi.albums.data.repository.remote.AlbumRemoteRepository
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
 
 /**
  * this is the viewmodel used to send data to
@@ -21,16 +19,7 @@ import kotlinx.coroutines.launch
  * @author faouzi BIDI
  *
  */
-class AlbumViewModel(application : Application) : AndroidViewModel(application){
-
-    // TODO("init interctaor with koin instance")
-    private val interactor : AlbumInteractor
-
-    init {
-        val remoteRepository = AlbumRemoteRepository()
-        val localRepository = AlbumLocalRepository(AlbumRoomDatabse.getDatabase(application).AlbumDao())
-        interactor = AlbumInteractor(remoteRepository, localRepository, application)
-    }
+class AlbumViewModel(application : Application, private val interactor: AlbumInteractor) : AndroidViewModel(application), KoinComponent {
 
     /**
      * return a LiveData of Albums

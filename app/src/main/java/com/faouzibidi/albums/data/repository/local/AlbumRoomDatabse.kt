@@ -26,6 +26,8 @@ abstract class AlbumRoomDatabse : RoomDatabase(){
         @Volatile
         private var INSTANCE: AlbumRoomDatabse? = null
 
+        private val DB_NAME = "album_database"
+
         fun getDatabase(context: Context): AlbumRoomDatabse {
             val db = INSTANCE
             if (db != null) {
@@ -35,7 +37,7 @@ abstract class AlbumRoomDatabse : RoomDatabase(){
                 val db = Room.databaseBuilder(
                     context.applicationContext,
                     AlbumRoomDatabse::class.java,
-                    "album_database"
+                    DB_NAME
                 ).build()
                 INSTANCE = db
                 return db

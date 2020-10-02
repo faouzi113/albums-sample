@@ -62,8 +62,7 @@ class AlbumSequenceParser(moshi: Moshi){
         val inputStream = URL(url).openStream()
         // get a bufferedSource from the inputStream
         val bufferedSource = inputStream.source().buffer()
-        //val bufferedSource = Okio.buffer(Okio.source(inputStream))
-        // create a JsonReader from bufferedSource
+        //
         return JsonReader.of(bufferedSource)
     }
 }

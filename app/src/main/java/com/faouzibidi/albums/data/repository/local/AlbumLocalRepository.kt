@@ -25,8 +25,7 @@ open class AlbumLocalRepository(private val albumDao : AlbumDao){
     }
 
     /**
-     * return LiveData of PagedList of albums
-     * where the page size of PagedList is PAGE_SIZE
+     * return first element in db
      */
     fun getFirstElement(): Album? {
         return albumDao.getFirstElement()

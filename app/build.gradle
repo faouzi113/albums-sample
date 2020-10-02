@@ -19,8 +19,6 @@ android {
 
     buildTypes {
         release {
-            // Enables code shrinking, obfuscation, and optimization for only
-            // release build type.
             minifyEnabled true
 
             // Enables resource shrinking, which is performed by the
@@ -87,9 +85,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
-    // koin
-    implementation "org.koin:koin-core:$koin_version"
-    testImplementation "org.koin:koin-test:$koin_version"
+    // koin for androidx and viewmodel support
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
     // Picasso
     implementation "com.squareup.picasso:picasso:$picasso_version"

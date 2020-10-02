@@ -11,6 +11,7 @@ import com.faouzibidi.albums.data.repository.remote.AlbumRemoteRepository
 import com.faouzibidi.albums.util.RefreshWorkerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.KoinComponent
 
 /**
  * We use in this Application MVVMi architecture, and this
@@ -27,8 +28,7 @@ import kotlinx.coroutines.withContext
  *
  * @author faouzi BIDI
  */
-class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepository: AlbumLocalRepository, val context: Context) {
-
+class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepository: AlbumLocalRepository, val context: Context) : KoinComponent{
     private val CHUNCKED_SEQ_SIZE = 500
     /**
      * this method return a list of Albums
