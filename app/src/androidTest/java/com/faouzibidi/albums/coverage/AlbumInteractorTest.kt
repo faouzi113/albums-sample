@@ -5,9 +5,9 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.faouzibidi.albums.interactor.AlbumInteractorFake
-import com.faouzibidi.albums.repository.local.AlbumLocalRepositoryFake
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepositoryFake
+import com.faouzibidi.albums.mock.interactor.AlbumInteractorFake
+import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepositoryFake
+import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepositoryFake
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,9 +31,16 @@ class AlbumInteractorTest {
         val ctx : Context = getInstrumentation().getContext()
         // create local and remote repositories
         val localRepository = AlbumLocalRepositoryFake.getInstance(ctx)
-        val remoteRepository = AlbumRemoteRepositoryFake(ctx)
+        val remoteRepository =
+            AlbumRemoteRepositoryFake(
+                ctx
+            )
         // crate the interactor instance
-        interctor = AlbumInteractorFake(remoteRepository, localRepository, ApplicationProvider.getApplicationContext())
+        interctor = AlbumInteractorFake(
+            remoteRepository,
+            localRepository,
+            ApplicationProvider.getApplicationContext()
+        )
     }
     /**
      * test if loadAlbums method works

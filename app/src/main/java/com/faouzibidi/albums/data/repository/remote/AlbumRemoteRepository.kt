@@ -1,6 +1,6 @@
-package com.faouzibidi.albums.repository.remote
+package com.faouzibidi.albums.data.repository.remote
 
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 

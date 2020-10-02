@@ -3,8 +3,8 @@ package com.faouzibidi.albums.coverage
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.repository.local.AlbumLocalRepositoryFake
+import com.faouzibidi.albums.data.model.Album
+import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepositoryFake
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals

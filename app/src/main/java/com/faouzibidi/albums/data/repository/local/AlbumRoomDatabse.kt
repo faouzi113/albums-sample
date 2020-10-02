@@ -1,10 +1,10 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.data.repository.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
 
 /**
  * this is the abstract class for the database

@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.faouzibidi.albums.helpers.NetworkHelper
-import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.repository.local.AlbumLocalRepository
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.util.NetworkHelper
+import com.faouzibidi.albums.data.model.Album
+import com.faouzibidi.albums.data.repository.local.AlbumLocalRepository
+import com.faouzibidi.albums.data.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.util.RefreshWorkerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -28,7 +29,7 @@ import kotlinx.coroutines.withContext
  */
 class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepository: AlbumLocalRepository, val context: Context) {
 
-    private val CHUNCKED_SEQ_SIZE = 100
+    private val CHUNCKED_SEQ_SIZE = 500
     /**
      * this method return a list of Albums
      *
@@ -37,22 +38,44 @@ class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepo
      */
     @WorkerThread
     suspend fun loadAlbums(){
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Default) {
             // check if we have data in db
             var album = localRepository.getFirstElement()
             // if we have no data we should call rest api
             if (album == null){
-                if(NetworkHelper.isConnected(context)){
-                    val albumsSeq = remoteRepository.getAlbums()
-                    // save data in db
-                    saveData(albumsSeq)
+                if (!refershData()){
+                    // if there is something wrong with refresh process
+                    // we will schedule 
+                    // a refresh task until the device get connected
+                    RefreshWorkerHelper.launchRefreshRequest(context)
                 }
+            }else{
+                // if we have local data to show we will
+                // schedule a refresh job for next time
+                RefreshWorkerHelper.launchRefreshRequest(context, RefreshWorkerHelper.REPEAT_INTERVAL)
             }
-            // in all cases we will schedule a loading work
-            // to get db updated
-            // TODO("schedule a work for workmanager")
         }
 
+    }
+
+    /**
+     * send a rest api request and store data into base
+     * 
+     * @return true if the loading of data has been successfully achieved
+     *          false if there is somthing wrong (could be network connection or saving process)
+     */
+    @WorkerThread
+    suspend fun refershData() : Boolean{
+        if(NetworkHelper.isConnected(context)){
+            // call rest api
+            val albumsSeq = remoteRepository.getAlbums()
+            // save data in db
+            saveData(albumsSeq)
+            // we already fetched new data so no need to call refresh request
+            return true
+        }else{
+            return false
+        }
     }
 
     /**
@@ -62,15 +85,19 @@ class AlbumInteractor(val remoteRepository: AlbumRemoteRepository, val localRepo
      */
     private suspend fun saveData(seq: Sequence<Album>){
         val albumsChunkedList = seq.chunked(CHUNCKED_SEQ_SIZE)
+        // then continue to insert all sublists
         /*
             split the Sequence inot small lists
             for each sublist we store elemets in db
             and we populate elements to the modelview
          */
-        albumsChunkedList.forEach {
-            // store albums in local db
-            localRepository.storeAlbums(it)
+        withContext(Dispatchers.IO) {
+            albumsChunkedList.forEach {
+                // store albums in local db
+                localRepository.storeAlbums(it)
+            }
         }
+
     }
 
     /**

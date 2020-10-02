@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.faouzibidi.albums.R
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
 
 /**
  *

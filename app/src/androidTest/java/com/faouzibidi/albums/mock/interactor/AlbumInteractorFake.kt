@@ -1,13 +1,13 @@
-package com.faouzibidi.albums.interactor
+package com.faouzibidi.albums.mock.interactor
 
 import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.faouzibidi.albums.helpers.NetworkHelper
-import com.faouzibidi.albums.model.Album
-import com.faouzibidi.albums.repository.local.AlbumLocalRepositoryFake
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepositoryFake
+import com.faouzibidi.albums.util.NetworkHelper
+import com.faouzibidi.albums.data.model.Album
+import com.faouzibidi.albums.mock.repository.local.AlbumLocalRepositoryFake
+import com.faouzibidi.albums.mock.repository.remote.AlbumRemoteRepositoryFake
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

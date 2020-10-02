@@ -1,8 +1,11 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.mock.repository.local
 
 import android.content.Context
 import androidx.room.Room
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
+import com.faouzibidi.albums.data.repository.local.AlbumDao
+import com.faouzibidi.albums.data.repository.local.AlbumLocalRepository
+import com.faouzibidi.albums.data.repository.local.AlbumRoomDatabse
 
 /**
  * This repository extends AlbumLocalRepository but use an InMemoeryDatabase

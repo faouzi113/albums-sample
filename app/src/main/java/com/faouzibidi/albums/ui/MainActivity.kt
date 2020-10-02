@@ -1,4 +1,4 @@
-package com.faouzibidi.albums
+package com.faouzibidi.albums.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.faouzibidi.albums.ui.AlbumViewModel
+import com.faouzibidi.albums.R
 import com.faouzibidi.albums.ui.adapters.AlbumPagedListAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val start = System.currentTimeMillis()
         var i = 0
         albumViewModel.getAlbumsPagedList().observe(this, Observer { albums ->
-            if(albums != null){
+            if(albums.isNotEmpty()){
                 // hide loader
                 loader.visibility = View.GONE
                 adapter.submitList(albums)

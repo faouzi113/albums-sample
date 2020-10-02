@@ -1,17 +1,18 @@
-package com.faouzibidi.albums.repository.remote
+package com.faouzibidi.albums.data.repository.remote
 
-import com.faouzibidi.albums.model.Album
+import android.content.Context
+import com.faouzibidi.albums.test.R
+import com.faouzibidi.albums.data.model.Album
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okio.Okio
-import java.net.URL
 
 /**
- * this class we are using to improve cal api performance
- * this is a constom JSON Parser which allow us
- * to read JSON response as a stream then return Sequence Object
- * that we can iterate through once we start parsing
+ * this class is used for testing purpose to simulate calling the
+ * rest api by reading a local json file stream used as mock
+ * instead of calling the real api
  *
  * @see Sequence
  * @see Moshi
@@ -19,9 +20,16 @@ import java.net.URL
  *
  * @author faouzi BIDI
  */
-class AlbumSequenceParser(moshi: Moshi){
+class AlbumSequenceParser(val context : Context){
 
-    private val API_URL = "https://static.leboncoin.fr/img/shared/technical-test.json"
+    /*
+     * building a moshi adapter for kotlin compatibility
+     */
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
+    private val FILE_RES_ID = R.raw.test
 
     private val albumAdapter: JsonAdapter<Album> = moshi.adapter(Album::class.java)
 
@@ -38,7 +46,7 @@ class AlbumSequenceParser(moshi: Moshi){
      *
      */
     suspend fun getAlbums(): Sequence<Album>{
-        return parse(getJsonReader(API_URL))
+        return parse(getJsonReader(FILE_RES_ID))
     }
 
     /**
@@ -55,26 +63,15 @@ class AlbumSequenceParser(moshi: Moshi){
     /**
      * create a JSONReader object which we can use for parse method
      */
-    private suspend fun getJsonReader(url:String): JsonReader{
+    private suspend fun getJsonReader(resourceId:Int): JsonReader{
         // create an inputstream from the URL
-        val inputStream = URL(url).openStream()
+        val inputStream = context.getResources().openRawResource(resourceId)
         // get a bufferedSource from the inputStream
         val bufferedSource = Okio.buffer(Okio.source(inputStream))
         // create a JsonReader from bufferedSource
         return JsonReader.of(bufferedSource)
     }
-}
 
-/**
- * use an extension from JsonReader so we can use it later
- * for parsin purpose
- *
- *
- */
-inline fun JsonReader.readArray(body: () -> Unit) {
-    beginArray()
-    while (hasNext()) {
-        body()
-    }
-    endArray()
+
+
 }

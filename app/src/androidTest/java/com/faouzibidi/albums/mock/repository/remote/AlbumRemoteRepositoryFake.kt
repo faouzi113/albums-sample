@@ -1,7 +1,8 @@
-package com.faouzibidi.albums.repository.remote
+package com.faouzibidi.albums.mock.repository.remote
 
 import android.content.Context
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
+import com.faouzibidi.albums.data.repository.remote.AlbumSequenceParser
 
 /**
  * This repository is used for testing purpose
@@ -12,7 +13,10 @@ class AlbumRemoteRepositoryFake(context: Context){
     private val albumParser: AlbumSequenceParser
 
     init {
-        albumParser = AlbumSequenceParser(context)
+        albumParser =
+            AlbumSequenceParser(
+                context
+            )
     }
     /**
      * call the rest api and get a Sequence of Albums

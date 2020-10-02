@@ -1,27 +1,18 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.data.repository.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
 
 /**
- *
- * this interface is the dao object used for room database
- * it defines all crud methodes
+ * this class is used for testing purpose
  *
  * @author faouzi BIDI
  */
 @Dao
 interface AlbumDao {
-
-    /**
-     * insert one element
-     */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAlbum(album: Album)
 
     /**
      * insert a list of elements
@@ -40,7 +31,7 @@ interface AlbumDao {
      * get a PagedList for Albums in db
      */
     @Query("SELECT * from album_table")
-    fun getAlbumsPagedList(): DataSource.Factory<Int, Album>
+    fun getAll(): List<Album>
 
     /**
      * get a first element

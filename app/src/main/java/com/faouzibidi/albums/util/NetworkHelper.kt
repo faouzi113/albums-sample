@@ -1,4 +1,4 @@
-package com.faouzibidi.albums.helpers
+package com.faouzibidi.albums.util
 
 import android.content.Context
 import android.net.ConnectivityManager

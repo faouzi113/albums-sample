@@ -2,7 +2,7 @@ package com.faouzibidi.albums.performance
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.faouzibidi.albums.repository.remote.AlbumRemoteRepository
+import com.faouzibidi.albums.data.repository.remote.AlbumRemoteRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

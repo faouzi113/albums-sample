@@ -1,9 +1,9 @@
-package com.faouzibidi.albums.repository.local
+package com.faouzibidi.albums.data.repository.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.faouzibidi.albums.model.Album
+import com.faouzibidi.albums.data.model.Album
 
 /**
  * The local Repository who exposes methods to save and retrieve data
@@ -28,7 +28,7 @@ open class AlbumLocalRepository(private val albumDao : AlbumDao){
      * return LiveData of PagedList of albums
      * where the page size of PagedList is PAGE_SIZE
      */
-    fun getFirstElement(): Album {
+    fun getFirstElement(): Album? {
         return albumDao.getFirstElement()
     }
 
