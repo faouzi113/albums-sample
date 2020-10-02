@@ -31,8 +31,12 @@ class NetworkHelper{
                         (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                                 || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
             } else {
-                val networkInfo = connectivityManager.activeNetworkInfo!!.type
-                networkInfo == ConnectivityManager.TYPE_WIFI || networkInfo == ConnectivityManager.TYPE_MOBILE
+                if(connectivityManager.activeNetworkInfo != null){
+                    val networkInfo = connectivityManager.activeNetworkInfo!!.type
+                    networkInfo == ConnectivityManager.TYPE_WIFI || networkInfo == ConnectivityManager.TYPE_MOBILE
+                }else{
+                    false
+                }
             }
 
         }
